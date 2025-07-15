@@ -18,7 +18,7 @@ export default {
 
     try {
       const response = await fetch(newRequest);
-      console.log("Upstream response status:", response.status);
+      console.log("Status from upstream:", response.status);
       return response;
     } catch (error) {
       console.error("Fetch failed:", error.message);
