@@ -1,28 +1,21 @@
 const blueDeploymentHost = "edge-blue-green-deployments-blue.devcontentstackapps.com";
-const greenDeploymentHost = "edge-blue-green-deployments.devcontentstackapps.com";
 
 export default {
   async fetch(request) {
-    const randomNumber = Math.floor((Math.random() * 10) + 1);
     const modifiedUrl = new URL(request.url);
+    modifiedUrl.hostname = blueDeploymentHost;
 
-    if (randomNumber % 2 === 0) {
-      modifiedUrl.hostname = blueDeploymentHost;
-      console.log("Routing to: BLUE deployment ->", modifiedUrl.hostname);
-    } else {
-      modifiedUrl.hostname = greenDeploymentHost;
-      console.log("Routing to: GREEN deployment ->", modifiedUrl.hostname);
-    }
+    console.log("Forcing route to: BLUE deployment ->", modifiedUrl.hostname);
 
     const newRequest = new Request(modifiedUrl, request);
 
     try {
       const response = await fetch(newRequest);
-      console.log("Status from upstream:", response.status);
+      console.log("Status from upstream (BLUE):", response.status);
       return response;
     } catch (error) {
-      console.error("Fetch failed:", error.message);
-      return new Response("Error fetching deployment", { status: 502 });
+      console.error("Fetch to BLUE failed:", error.message);
+      return new Response("Error fetching blue deployment", { status: 502 });
     }
   }
 };
