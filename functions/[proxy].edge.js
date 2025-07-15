@@ -1,5 +1,5 @@
-const blueDeploymentHost = "blue-green-deployments-blue.devcontentstackapps.com";
-const greenDeploymentHost = "blue-green-deployments.devcontentstackapps.com";
+const blueDeploymentHost = "edge-blue-green-deployments-blue.devcontentstackapps.com";
+const greenDeploymentHost = "edge-blue-green-deployments.devcontentstackapps.com";
 
 export default {
   async fetch(request) {
