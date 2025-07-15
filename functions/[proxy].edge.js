@@ -1,5 +1,5 @@
-const blueDeploymentHost = "edge-blue-green-deployments.azstagcontentstackapps.com";
-const greenDeploymentHost = "edge-blue-green-deployments-green.azstagcontentstackapps.com";
+const blueDeploymentHost = "edge-blue-green-deployments.devcontentstackapps.com";
+const greenDeploymentHost = "edge-blue-green-deployments-green.devcontentstackapps.com";
 
 export default async function handler(request) {
   const randomNumber = Math.floor((Math.random() * 10) + 1);
