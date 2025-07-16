@@ -2,21 +2,17 @@ export const config = {
   runtime: 'edge',
 };
 
-const blueDeploymentHost = "edge-blue-green-deployments-blue.devcontentstackapps.com";
-const greenDeploymentHost = "edge-blue-green-deployments.devcontentstackapps.com";
+const blueDeploymentHost = "blue.domain.com";
+const greenDeploymentHost = "green.domain.com";
 
 export default async function handler(request) {
   const url = new URL(request.url);
+  const random = Math.floor(Math.random() * 10) + 1;
 
-  // Example logic — force redirect to blue
-  const randomNumber = Math.floor(Math.random() * 10) + 1;
-  const targetHost = randomNumber % 2 === 0 ? blueDeploymentHost : greenDeploymentHost;
-
-  // Build the full redirect URL (preserving path and query)
-  url.hostname = targetHost;
+  url.hostname = random % 2 === 0 ? blueDeploymentHost : greenDeploymentHost;
   const redirectUrl = url.toString();
 
-  console.log("🔀 Redirecting to:", redirectUrl);
+  console.log("Redirecting to:", redirectUrl);
 
   return Response.redirect(redirectUrl, 302);
 }
