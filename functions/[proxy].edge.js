@@ -2,8 +2,8 @@ export const config = {
   runtime: 'edge',
 };
 
-const blueHost = 'edge-blue-green-deployments-blue.devcontentstackapps.com';
-const greenHost = 'edge-blue-green-deployments.devcontentstackapps.com';
+const blueHost = 'edge-blue-green-deployments-blue.gcpstagcontentstackapps.com';
+const greenHost = 'edge-blue-green-deployments.gcpstagcontentstackapps.com';
 
 export default async function handler(request) {
   const incomingUrl = new URL(request.url);
