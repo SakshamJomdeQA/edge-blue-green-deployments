@@ -17,8 +17,8 @@ export default async function handler(request) {
     return Response.redirect(incomingUrl.toString(), 302);
   } else {
     const proxyUrl = new URL(request.url);
-    proxyUrl.hostname = greenHost;
-    console.log("Proxying to GREEN:", proxyUrl.toString());
-    return Response.redirect(proxyUrl.toString(), 302);
+    incomingUrl.hostname = greenHost;
+    console.log("Redirecting to GREEN:", incomingUrl.toString());
+    return Response.redirect(incomingUrl.toString(), 302);
   }
 }
