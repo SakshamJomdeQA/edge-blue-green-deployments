@@ -6,7 +6,7 @@ export default {
     const modifiedUrl = new URL(request.url);
 
     // Check for custom header to override deployment
-    const selectedDeployment = request.headers.get('x-deployment');
+    const selectedDeployment = request.headers.get('blue');
 
     if (selectedDeployment === 'blue') {
       modifiedUrl.hostname = blueDeploymentHost;
