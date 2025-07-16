@@ -1,15 +1,24 @@
-const blueDeploymentHost = "edge-blue-green-deployments.azstagcontentstackapps.com";
-const greenDeploymentHost = "edge-blue-green-deployments-green.azstagcontentstackapps.com";
+export const config = {
+  runtime: 'edge',
+};
+
+const blueHost = 'edge-blue-green-deployments-blue.devcontentstackapps.com';
+const greenHost = 'edge-blue-green-deployments.devcontentstackapps.com';
 
 export default async function handler(request) {
-  const randomNumber = Math.floor((Math.random() * 10) + 1);
-  const modifiedUrl = new URL(request.url);
-  if (randomNumber % 2 === 0) {
-    modifiedUrl.hostname = blueDeploymentHost;
-  } else {
-    modifiedUrl.hostname = greenDeploymentHost;
-  }
+  const incomingUrl = new URL(request.url);
 
-  const newRequest = new Request(modifiedUrl, request);
-  return fetch(newRequest);
+  const random = Math.floor(Math.random() * 10) + 1;
+  const isBlue = random % 2 === 0;
+
+  if (isBlue) {
+    incomingUrl.hostname = blueHost;
+    console.log("Redirecting to BLUE:", incomingUrl.toString());
+    return Response.redirect(incomingUrl.toString(), 302);
+  } else {
+    const proxyUrl = new URL(request.url);
+    proxyUrl.hostname = greenHost;
+    console.log("Proxying to GREEN:", proxyUrl.toString());
+    return Response.redirect(proxyUrl.toString(), 302);
+  }
 }
