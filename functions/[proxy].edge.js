@@ -2,17 +2,29 @@ export const config = {
   runtime: 'edge',
 };
 
-const blueDeploymentHost = "edge-blue-green-deployments-blue.devcontentstackapps.com";
-const greenDeploymentHost = "edge-blue-green-deployments.devcontentstackapps.com";
+const blueHost = 'edge-blue-green-deployments-blue.devcontentstackapps.com'; // blue deployment (no edge)
+const greenHost = 'edge-blue-green-deployments.devcontentstackapps.com';     // green deployment (with edge)
 
 export default async function handler(request) {
-  const url = new URL(request.url);
+  const incomingUrl = new URL(request.url);
+
+  // Pick backend (blue or green) randomly
   const random = Math.floor(Math.random() * 10) + 1;
+  const targetHost = random % 2 === 0 ? blueHost : greenHost;
 
-  url.hostname = random % 2 === 0 ? blueDeploymentHost : greenDeploymentHost;
-  const redirectUrl = url.toString();
+  const proxyUrl = new URL(request.url);
+  proxyUrl.hostname = targetHost;
 
-  console.log("Redirecting to:", redirectUrl);
+  console.log(`Proxying to: ${proxyUrl.toString()}`);
 
-  return Response.redirect(redirectUrl, 302);
+  // Forward original request to the selected backend
+  const response = await fetch(proxyUrl.toString(), {
+    method: request.method,
+    headers: request.headers,
+    body: request.body,
+    redirect: 'manual',
+  });
+
+  // Return the proxied response to the browser (browser stays on original domain)
+  return response;
 }
